@@ -1,0 +1,4 @@
+enum ItemCategory {
+  Education,
+  Travel,
+}

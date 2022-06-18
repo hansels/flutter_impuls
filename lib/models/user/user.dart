@@ -1,19 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_impuls/functions/token_version.dart';
 
 class User with ChangeNotifier {
   static User _empty;
-  String id;
-  String name;
-  String classRoom;
 
-  static final instance = FirebaseFirestore.instance;
+  final String id;
+  final String name;
+  final String email;
+  final String password;
 
   User({
     this.id,
     this.name,
-    this.classRoom,
+    this.email,
+    this.password,
   }) : assert(name != null || name.isNotEmpty);
 
   static User empty() {
@@ -28,7 +27,8 @@ class User with ChangeNotifier {
         : User(
             id: data["id"] ?? "",
             name: data["name"] ?? "",
-            classRoom: data["classRoom"] ?? "",
+            email: data["email"] ?? "",
+            password: data["password"] ?? "",
           );
   }
 
@@ -40,24 +40,8 @@ class User with ChangeNotifier {
     return {
       "id": id,
       "name": name,
-      "classRoom": classRoom,
+      "email": email,
+      "password": password,
     };
-  }
-
-  Map<String, dynamic> toChatVariables() {
-    return {"id": id, "name": name};
-  }
-
-  Future<void> update() async {
-    await instance.collection('users').doc(id).update(toVariables());
-  }
-
-  Future<void> updateTokenVersionUser() async {
-    await TokenVersion.setUser(this);
-  }
-
-  static Future<User> load(String uid) async {
-    var document = await instance.collection('users').doc(uid).get();
-    return User.fromMap(document.data());
   }
 }
