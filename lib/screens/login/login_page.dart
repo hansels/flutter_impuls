@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
+import 'package:flutter_impuls/enums/page_name.dart';
+import 'package:flutter_impuls/functions/routes.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 import 'package:flutter_impuls/widgets/long_raised_button.dart';
 import 'package:flutter_impuls/widgets/normal_form_field.dart';
@@ -54,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      print("Register Page");
+                      Routes.pushReplacement(context, PageName.Register);
                     },
                     style: ButtonStyle(
                         shape:

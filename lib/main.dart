@@ -7,6 +7,7 @@ import 'package:flutter_impuls/functions/token_version.dart';
 import 'package:flutter_impuls/screens/home/home_screen.dart';
 import 'package:flutter_impuls/screens/introduction/introduction_screen.dart';
 import 'package:flutter_impuls/screens/login/login_screen.dart';
+import 'package:flutter_impuls/screens/register/register_screen.dart';
 import 'package:flutter_impuls/widgets/animated_splash/animated_splash.dart';
 
 void main() async {
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
     String email = await TokenVersion.getEmail();
     bool isTutorial = await TokenVersion.getIsTutorial();
 
-    return LoginScreen();
+    return RegisterScreen();
 
     // if (!isTutorial) {
     //   return IntroductionScreen();

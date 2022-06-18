@@ -27,7 +27,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return SwipeUp(
       color: Colors.black87,
       onSwipe: () async {
-        return Routes.push(context, PageName.Login);
+        return Routes.pushReplacement(context, PageName.Login);
       },
       body: Material(
         child: Center(

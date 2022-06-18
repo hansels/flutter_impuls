@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
-import 'package:flutter_impuls/interfaces/i_has_name.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CustomDropdown<T extends IHasName> extends StatefulWidget {
+class CustomDropdown extends StatefulWidget {
   final bool isExpanded;
   final String hint;
-  final T selected;
-  final void Function(T) onChanged;
-  final List<T> list;
+  final String selected;
+  final void Function(String) onChanged;
+  final List<String> list;
 
-  const CustomDropdown({
+  CustomDropdown({
     this.isExpanded = true,
     @required this.hint,
     @required this.selected,
@@ -19,11 +18,10 @@ class CustomDropdown<T extends IHasName> extends StatefulWidget {
   });
 
   @override
-  _CustomDropdownState<T> createState() => _CustomDropdownState<T>();
+  _CustomDropdownState createState() => _CustomDropdownState();
 }
 
-class _CustomDropdownState<T extends IHasName>
-    extends State<CustomDropdown<T>> {
+class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,11 +34,11 @@ class _CustomDropdownState<T extends IHasName>
           child: DropdownButtonHideUnderline(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<T>(
+              child: DropdownButton<String>(
                 isExpanded: widget.isExpanded,
                 hint: Text(widget.hint),
                 icon: const Icon(FontAwesomeIcons.caretDown),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Configs.primaryColor,
                   fontFamily: "Svenska",
@@ -49,9 +47,9 @@ class _CustomDropdownState<T extends IHasName>
                 onChanged: widget.onChanged,
                 items: widget.list
                     .map(
-                      (value) => DropdownMenuItem<T>(
-                        value: value,
-                        child: Text(value.name),
+                      (item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item),
                       ),
                     )
                     .toList(),
