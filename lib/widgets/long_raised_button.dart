@@ -7,14 +7,15 @@ class LongRaisedButton extends StatelessWidget {
   final bool disabled;
   final Color color;
   final double dividedBy;
+  final double height;
 
-  LongRaisedButton({
-    @required this.onPressed,
-    @required this.child,
-    this.disabled = false,
-    this.color = Configs.primaryColor,
-    this.dividedBy = 1.5,
-  });
+  LongRaisedButton(
+      {@required this.onPressed,
+      @required this.child,
+      this.disabled = false,
+      this.color = Configs.primaryColor,
+      this.dividedBy = 1.5,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class LongRaisedButton extends StatelessWidget {
         onPressed: disabled ? null : onPressed,
         child: child,
       ),
+      height: height,
     );
   }
 }
