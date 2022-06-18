@@ -51,6 +51,7 @@ dependencies:
   flutter_chat_ui: ^1.6.1
   flutter_link_previewer: ^3.0.0
   flutter_chat_types: ^3.4.2
+  fl_chart: ^0.55.0
 
 dev_dependencies:
   flutter_test:
