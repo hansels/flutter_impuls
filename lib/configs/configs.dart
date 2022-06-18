@@ -7,10 +7,10 @@ class Configs {
   static const primaryColor = Color.fromRGBO(195, 101, 67, 1);
   static const secondaryColor = Color.fromRGBO(247, 185, 146, 1);
   static const tertiaryColor = Color.fromRGBO(215, 161, 93, 1);
-  // static const quardiaryColor = Color.fromRGBO(74, 113, 146, 1);
+  static const quardiaryColor = Color.fromRGBO(213, 227, 232, 1);
   // static const pentiaryColor = Color.fromRGBO(20, 51, 78, 1);
   // static const hexadiaryColor = Color.fromRGBO(93, 147, 215, 1);
-  static const backgroundColor = Color.fromRGBO(213, 227, 232, 1);
+  static const backgroundColor = Color.fromRGBO(255, 242, 224, 1);
   static const statusBarColor = Color.fromRGBO(0, 69, 135, 1);
   static const stickyNotesColor = Color.fromRGBO(254, 255, 156, 1);
 
