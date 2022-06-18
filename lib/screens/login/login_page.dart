@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
 import 'package:flutter_impuls/enums/page_name.dart';
 import 'package:flutter_impuls/functions/routes.dart';
+import 'package:flutter_impuls/models/wishlist/wishlist.dart';
+import 'package:flutter_impuls/screens/wishlist/widgets/wishlist_card.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 import 'package:flutter_impuls/widgets/long_raised_button.dart';
 import 'package:flutter_impuls/widgets/normal_form_field.dart';
@@ -35,6 +37,20 @@ class _LoginPageState extends State<LoginPage> {
                   "assets/mama_logo.png",
                   width: 300,
                 ),
+              ),
+            ),
+            WishlistCard(
+              wishlist: Wishlist(
+                name: "JALAN JALAN",
+                progress: 50000,
+                target: 200000,
+              ),
+            ),
+            WishlistCard(
+              wishlist: Wishlist(
+                name: "Pergi Terbang",
+                progress: 25000,
+                target: 300000,
               ),
             ),
             const Padding(
