@@ -21,7 +21,7 @@ class LoadingWidget extends StatelessWidget {
   Widget content() {
     return const Center(
       child: SpinKitSquareCircle(
-        color: Configs.pentiaryColor,
+        color: Configs.tertiaryColor,
         size: 100.0,
       ),
     );
