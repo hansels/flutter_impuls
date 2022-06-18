@@ -48,6 +48,9 @@ dependencies:
   swipe_up: ^1.0.0
   keyboard_dismisser: ^3.0.0
   font_awesome_flutter: ^10.1.0
+  flutter_chat_ui: ^1.6.1
+  flutter_link_previewer: ^3.0.0
+  flutter_chat_types: ^3.4.2
 
 dev_dependencies:
   flutter_test:
