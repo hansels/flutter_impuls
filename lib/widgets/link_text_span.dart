@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_impuls/extensions/string_extensions.dart';
