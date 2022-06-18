@@ -1,4 +1,4 @@
-package com.example.flutter_impuls
+package dev.mtsstudio.nasihat_mama
 
 import io.flutter.embedding.android.FlutterActivity
 

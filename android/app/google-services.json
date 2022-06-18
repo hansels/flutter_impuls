@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "292917114766",
+    "project_id": "nasihat-mama",
+    "storage_bucket": "nasihat-mama.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292917114766:android:1132e6f1407365789d96df",
+        "android_client_info": {
+          "package_name": "dev.mtsstudio.nasihat_mama"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292917114766-fokunn9lk0o7971nrh2fjfiive25ovu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtFl8UZs5g5WZ6ktl-5tuS0ol09Ny2STk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292917114766-fokunn9lk0o7971nrh2fjfiive25ovu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

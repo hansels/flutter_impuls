@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_impuls">
+    package="dev.mtsstudio.nasihat_mama">
    <application
         android:label="flutter_impuls"
         android:name="${applicationName}"

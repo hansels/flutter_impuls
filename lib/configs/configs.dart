@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Configs {
-  static String appName = "C-Xlence";
+  static String appName = "Nasihat Mama";
 
   //Colors for theme
   static const primaryColor = Color.fromRGBO(30, 78, 119, 1);
