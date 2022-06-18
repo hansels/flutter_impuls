@@ -45,8 +45,6 @@ class Configs {
   static const highlighterColor = Color.fromRGBO(254, 255, 126, 1);
 
   static const Color linkColor = Color(0XFF0000EE);
-  static const String httpLink =
-      "https://asia-southeast2-research-paper-cc.cloudfunctions.net/api";
 
   static const double appBarTitleFontSize = 18.0;
   static const double screenPadding = 20.0;
@@ -56,21 +54,21 @@ class Configs {
     horizontal: Configs.screenPadding,
   );
 
-  static const EdgeInsets topLeftRightEdgeInsets = const EdgeInsets.only(
+  static const EdgeInsets topLeftRightEdgeInsets = EdgeInsets.only(
     left: Configs.screenPadding,
     right: Configs.screenPadding,
     top: Configs.screenPadding / 1.5,
   );
 
   static RoundedRectangleBorder roundedRectangleBorder() {
-    return RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(const Radius.circular(12.5)),
+    return const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12.5)),
     );
   }
 
   static RoundedRectangleBorder litteRoundedRectangleBorder() {
-    return RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(const Radius.circular(5)),
+    return const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
     );
   }
 

@@ -28,6 +28,16 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi membutuhkan Akses ke Kamera Perangkat untuk mengambil Gambar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Aplikasi tidak membutuhkan akses ke Mikropon Perangkat</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aplikasi membutuhkan Akses ke Galeri Perangkat untuk mengambil Gambar</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Aplikasi tidak membutuhkan akses ke Lokasi GPS Perangkat</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikasi tidak membutuhkan akses ke Lokasi GPS Perangkat</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
