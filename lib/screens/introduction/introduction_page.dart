@@ -44,7 +44,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                 child: CustomText("Traveller!", fontSize: 32),
               ),
               const SizedBox(height: 30),
-              Image.asset("mama_pog_512.png"),
+              Image.asset("assets/mama_pog_512.png"),
             ],
           ),
         ),
@@ -58,8 +58,4 @@ class _IntroductionPageState extends State<IntroductionPage> {
       ),
     );
   }
-
-  String generateImageRandom() => "assets/image_${next(0, 10)}.png";
-
-  int next(int min, int max) => min + _random.nextInt(max - min);
 }

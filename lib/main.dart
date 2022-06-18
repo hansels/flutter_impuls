@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: AnimatedSplash.styled(
-        imagePath: "assets/mama_pog512.png",
+        imagePath: "assets/mama_pog_512.png",
         customFunction: getHomeScreen(context),
         curve: Curves.easeInOutCirc,
         style: AnimationStyle.FadeIn,
