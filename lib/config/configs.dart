@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Configs {
-  static const String gqlLink = 'https://test-dompet.ezmeta.com/';
-
-  static String? branchId;
-  static String? companyId;
-  static String? warehouseId;
-
   // static TextTheme textTheme = TextTheme(
   //   headline1: GoogleFonts.playfairDisplay(
   //     fontSize: 96.0,
