@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/enums/page_name.dart';
 import 'package:flutter_impuls/functions/loading_function.dart';
+import 'package:flutter_impuls/functions/routes.dart';
 import 'package:flutter_impuls/widgets/builder/future_use.dart';
+import 'package:flutter_impuls/widgets/transparent_app_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 import '../../configs/configs.dart';
@@ -28,11 +31,18 @@ abstract class BaseScreenWithAppBar extends StatefulWidget {
   }
 
   Widget appBar(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: title(context),
-      backgroundColor: Configs.primaryColor,
-      actions: appBarActions(context),
+    return TransparentAppBar(
+      title: "Nasihat Mama",
+      withBackButton: false,
+      actions: [
+        IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.circleUser,
+            color: Colors.black,
+          ),
+          onPressed: () => Routes.push(context, PageName.Profile),
+        ),
+      ],
     );
   }
 

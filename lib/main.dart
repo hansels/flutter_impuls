@@ -46,14 +46,16 @@ class MyApp extends StatelessWidget {
     String email = await TokenVersion.getEmail();
     bool isTutorial = await TokenVersion.getIsTutorial();
 
-    if (!isTutorial) {
-      return IntroductionScreen();
-    }
+    return HomeScreen();
 
-    if (email.isNotEmpty) {
-      return DoubleBackFunction.use(child: HomeScreen());
-    } else {
-      return DoubleBackFunction.use(child: LoginScreen());
-    }
+    // if (!isTutorial) {
+    //   return IntroductionScreen();
+    // }
+
+    // if (email.isNotEmpty) {
+    //   return DoubleBackFunction.use(child: HomeScreen());
+    // } else {
+    //   return DoubleBackFunction.use(child: LoginScreen());
+    // }
   }
 }
