@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_impuls/basics/exceptions/http_exception.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_impuls/configs/configs.dart';
 
 abstract class BaseHTTPHelper {
   String get route;

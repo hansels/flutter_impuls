@@ -3,4 +3,6 @@ enum PageName {
   Introduction,
   Login,
   Register,
+  Profile,
+  Wishlist,
 }

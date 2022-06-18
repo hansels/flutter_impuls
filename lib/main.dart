@@ -46,6 +46,8 @@ class MyApp extends StatelessWidget {
     String email = await TokenVersion.getEmail();
     bool isTutorial = await TokenVersion.getIsTutorial();
 
+    // return HomeScreen();
+
     if (!isTutorial) {
       return IntroductionScreen();
     }
