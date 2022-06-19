@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
+import 'package:flutter_impuls/functions/enum_parser.dart';
 import 'package:flutter_impuls/models/wishlist/wishlist.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,9 +41,9 @@ class _WishlistCardState extends State<WishlistCard> {
                     ),
                     color: Configs.tertiaryColor,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: CustomText(
-                      "Wishlist",
+                      EnumParser.getString(widget.wishlist.itemCategory),
                       color: Configs.backgroundColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 15,

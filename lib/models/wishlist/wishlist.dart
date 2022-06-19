@@ -2,12 +2,12 @@ import 'package:flutter_impuls/enums/item_category.dart';
 import 'package:flutter_impuls/functions/enum_parser.dart';
 
 class Wishlist {
-  final String id;
-  final String userId;
-  final String name;
-  final int target;
-  final int progress;
-  final ItemCategory itemCategory;
+  String id;
+  String userId;
+  String name;
+  int target;
+  int progress;
+  ItemCategory itemCategory;
 
   Wishlist({
     this.id,
