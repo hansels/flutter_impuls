@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_impuls/configs/configs.dart';
 import 'package:flutter_impuls/enums/chat_type.dart';
 import 'package:flutter_impuls/models/chat/chat.dart';
 import 'package:flutter_impuls/models/chat/chat_helper.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_impuls/screens/home/mama_logic.dart';
 import 'package:flutter_impuls/screens/home/start_session_widget.dart';
 import 'package:flutter_impuls/widgets/builder/future_use.dart';
 import 'package:flutter_impuls/widgets/builder/user_builder.dart';
+import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -117,6 +119,19 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: ui.Chat(
                         messages: _messages,
+                        customBottomWidget: !session.isActive
+                            ? Container(
+                                width: double.infinity,
+                                color: Configs.secondaryColor,
+                                height: 100,
+                                child: const Center(
+                                  child: CustomText(
+                                    "Sesi ini telah berakhir",
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              )
+                            : null,
                         onPreviewDataFetched: _handlePreviewDataFetched,
                         onSendPressed: _handleSendPressed,
                         user: _user,
@@ -202,6 +217,11 @@ class _HomePageState extends State<HomePage> {
 
     if (reply != null) {
       session = reply.session;
+      if (session.verdict != null) {
+        await _sessionHelper.update(session);
+        _sessionHelper.endSession(session.id);
+        session.isActive = false;
+      }
       mamaEmotion = reply.mamaEmotion;
 
       for (final message in reply.replies) {

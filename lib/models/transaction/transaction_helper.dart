@@ -8,7 +8,6 @@ class TransactionHelper {
     return instance
         .collection('transactions')
         .where('userId', isEqualTo: userId)
-        .where('daySinceLastPurchase', isLessThanOrEqualTo: 30)
         .get()
         .then((snapshot) =>
             snapshot.docs.map((e) => Transaction.fromMap(e.data())));
