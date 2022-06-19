@@ -24,15 +24,16 @@ class AddWishlistPage extends StatefulWidget {
 }
 
 class _AddWishlistPageState extends State<AddWishlistPage> {
-  String selected;
-  String itemName;
-  ItemCategory itemCategory;
-  int target;
+  Wishlist wishlist;
 
   WishlistHelper _wishlistHelper;
 
   @override
   void initState() {
+    wishlist = Wishlist(
+      id: randomString(),
+      progress: 0,
+    );
     _wishlistHelper = WishlistHelper();
     super.initState();
   }
@@ -46,6 +47,7 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 30.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
                 child: CustomText(
@@ -59,11 +61,13 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
                     const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
                 child: NormalFormField(
                   hintText: "Masukkan Nama Barang impian kamu",
+                  text: wishlist.name,
                   onChanged: (text) {
-                    itemName = text;
+                    wishlist.name = text;
                   },
                 ),
               ),
+              const SizedBox(height: 30.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
                 child: CustomText('Kategori Barang',
@@ -82,16 +86,18 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
                     EnumParser.getString(ItemCategory.Makanan),
                     EnumParser.getString(ItemCategory.MakeUp),
                   ],
-                  selected: selected,
-                  onChanged: (a) {
+                  selected: wishlist.itemCategory != null
+                      ? EnumParser.getString(wishlist.itemCategory)
+                      : null,
+                  onChanged: (res) {
                     setState(() {
-                      selected = a;
-                      itemCategory =
-                          EnumParser.getEnum(ItemCategory.values, selected);
+                      wishlist.itemCategory =
+                          EnumParser.getEnum(ItemCategory.values, res);
                     });
                   },
                 ),
               ),
+              const SizedBox(height: 30.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
                 child: CustomText('Target',
@@ -101,43 +107,27 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
                 child: NormalFormField(
+                  text: wishlist.target?.toString(),
                   hintText: "Masukkan Target kamu",
                   keyboardType: TextInputType.number,
                   onChanged: (text) {
-                    target = int.parse(text);
+                    wishlist.target = int.parse(text);
                   },
                 ),
               ),
-              // Container(
-              //   width:,
-              //   height: 80.0,
-              //   decoration: new BoxDecoration(
-              //     color: Colors.black,
-              //     shape: BoxShape.rectangle,
-              //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              //   ),
-              // ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Center(
                 child: LongRaisedButton(
                   dividedBy: 1.2,
                   height: 50,
                   onPressed: () {
                     ToastHelper.show("Wishlist Successfully Added", context);
-                    Routes.pop(context);
-                    Wishlist wishlist = Wishlist(
-                      id: randomString(),
-                      itemCategory: itemCategory,
-                      name: itemName,
-                      progress: 0,
-                      target: target,
-                      userId: user.email,
-                    );
-
+                    wishlist.userId = user.email;
                     _wishlistHelper.create(wishlist);
+                    Routes.pop(context);
                   },
                   // color: ,
-                  child: CustomText(
+                  child: const CustomText(
                     "Simpan",
                     color: Colors.white,
                     fontSize: 20,

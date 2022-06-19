@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Configs.dangerColor,
                 onPressed: () async {
                   await TokenVersion.clearTokenAndUser();
-                  return Routes.pushAndRemoveUntilFirst(
+                  return Routes.pushAndRemoveUntil(
                     context,
                     PageName.Introduction,
                   );
