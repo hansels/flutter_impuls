@@ -35,16 +35,34 @@ class _IntroductionPageState extends State<IntroductionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: CustomText("Good Day,", fontSize: 40),
+              // Image(image: ,)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
+                child: Image.asset(
+                  "assets/introduction.png",
+                ),
               ),
+              // Container(
+              //   child:
+              //   padding: EdgeInsets.fromLTRB(60, 0, 60, 30),
+              // ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: CustomText("Traveller!", fontSize: 32),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                child: CustomText("Selamat datang anak Mama!",
+                    fontSize: 32, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 30),
-              Image.asset("assets/mama_pog_512.png"),
+              const SizedBox(height: 3),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: CustomText(
+                    "Mari Menghemat Pengeluaran Kamu Bareng Mama ",
+                    fontSize: 20),
+              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 15.0),
+              //   child: CustomText("tingkatin tabunganmu hingga 30%!",
+              //       fontSize: 20),
+              // ),
             ],
           ),
         ),
