@@ -125,11 +125,11 @@ class _ProfileChartState extends State<ProfileChart> {
     );
     String text;
     if (value == 0) {
-      text = '1K';
+      text = '1M';
     } else if (value == 10) {
-      text = '5K';
+      text = '5M';
     } else if (value == 19) {
-      text = '10K';
+      text = '10M';
     } else {
       return Container();
     }
