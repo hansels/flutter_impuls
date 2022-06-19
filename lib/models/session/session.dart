@@ -3,17 +3,17 @@ import 'package:flutter_impuls/models/item/item.dart';
 class Session {
   static Session _empty;
 
-  final String id;
-  final String userId;
-  final int quantity;
-  final String reason;
-  final bool verdict;
-  final int rejectType;
+  String id;
+  String userId;
+  int quantity;
+  String reason;
+  bool verdict;
+  int rejectType;
   Item item;
 
-  final bool isHobby;
-  final bool isProfession;
-  final bool isActive;
+  bool isHobby;
+  bool isProfession;
+  bool isActive;
 
   static Session empty() {
     return _empty ??= Session(id: "EMPTY");

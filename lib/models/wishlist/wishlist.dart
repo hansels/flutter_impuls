@@ -1,9 +1,13 @@
+import 'package:flutter_impuls/enums/item_category.dart';
+import 'package:flutter_impuls/functions/enum_parser.dart';
+
 class Wishlist {
   final String id;
   final String userId;
   final String name;
   final int target;
   final int progress;
+  final ItemCategory itemCategory;
 
   Wishlist({
     this.id,
@@ -11,6 +15,7 @@ class Wishlist {
     this.name,
     this.target,
     this.progress,
+    this.itemCategory,
   });
 
   static Wishlist fromMap(Map<String, dynamic> data) {
@@ -22,6 +27,8 @@ class Wishlist {
             name: data["name"] ?? "",
             target: data["target"] ?? 0,
             progress: data["progress"] ?? 0,
+            itemCategory: EnumParser.getEnum<ItemCategory>(
+                ItemCategory.values, data["itemCategory"]),
           );
   }
 
@@ -36,6 +43,7 @@ class Wishlist {
       "name": name,
       "target": target,
       "progress": progress,
+      "itemCategory": EnumParser.getString<ItemCategory>(itemCategory),
     };
   }
 }

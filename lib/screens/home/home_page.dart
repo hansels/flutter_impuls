@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   SessionHelper _sessionHelper;
   ChatHelper _chatHelper;
   String mamaEmotion;
+  bool isInitial;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage> {
     _sessionHelper = SessionHelper();
     _chatHelper = ChatHelper();
     mamaEmotion = "smile";
+    isInitial = false;
 
     super.initState();
   }
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         future: _sessionHelper.getSession(user.email),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            session = snapshot.data;
+            session ??= snapshot.data;
 
             if (session.isEmpty) {
               return StartSessionWidget(
@@ -72,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                     _addMessageFromMama(
                       "Ya, ${user.getFirstName()}, apa yang mau kamu beli?",
                     );
+                    isInitial = true;
                   });
                 },
               );
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             return FutureUse<Iterable<Chat>>(
               future: _chatHelper.getList(session.id),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && !isInitial) {
                   final chats = snapshot.data;
                   for (var chat in chats) {
                     types.Message message;
@@ -199,6 +202,7 @@ class _HomePageState extends State<HomePage> {
 
     if (reply != null) {
       session = reply.session;
+      mamaEmotion = reply.mamaEmotion;
 
       for (final message in reply.replies) {
         _addMessageFromMama(message);
