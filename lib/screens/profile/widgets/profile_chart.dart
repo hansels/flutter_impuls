@@ -69,7 +69,7 @@ class _ProfileChartState extends State<ProfileChart> {
                     makeTransactionsIcon(),
                     const SizedBox(width: 16),
                     const Text(
-                      'Penghematan Bulan Ini',
+                      'Sejarah penghematanmu',
                       style: TextStyle(color: Colors.white, fontSize: 26),
                     ),
                   ],
@@ -141,7 +141,7 @@ class _ProfileChartState extends State<ProfileChart> {
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    List<String> titles = ["Mn", "Te", "Wd", "Tu", "Fr", "St", "Su"];
+    List<String> titles = ["Jan", "Feb", "Mar", "May", "Jun", "Jul", "Aug"];
 
     Widget text = Text(
       titles[value.toInt()],
