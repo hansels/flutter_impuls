@@ -43,7 +43,7 @@ class Session {
             quantity: data["quantity"] ?? 0,
             item: Item.fromMap(data["item"]),
             reason: data["reason"] ?? "",
-            verdict: data["verdict"] ?? false,
+            verdict: data["verdict"],
             rejectType: data["rejectType"] ?? 0,
             isHobby: data["isHobby"] ?? false,
             isProfession: data["isProfession"] ?? false,

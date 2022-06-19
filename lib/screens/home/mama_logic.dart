@@ -127,8 +127,6 @@ class MamaLogic {
           categoryScoring -
           reasonScoring;
 
-      print(scoring);
-
       if (totalBalance < totalPaymentPrice) {
         session.verdict = false;
         session.rejectType = 3;

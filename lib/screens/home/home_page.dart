@@ -16,6 +16,7 @@ import 'package:flutter_impuls/screens/home/start_session_widget.dart';
 import 'package:flutter_impuls/widgets/builder/future_use.dart';
 import 'package:flutter_impuls/widgets/builder/user_builder.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
+import 'package:flutter_impuls/widgets/long_raised_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -124,10 +125,34 @@ class _HomePageState extends State<HomePage> {
                                 width: double.infinity,
                                 color: Configs.secondaryColor,
                                 height: 100,
-                                child: const Center(
-                                  child: CustomText(
-                                    "Sesi ini telah berakhir",
-                                    fontSize: 20,
+                                child: Center(
+                                  child: LongRaisedButton(
+                                    height: 50,
+                                    onPressed: () {
+                                      setState(() {
+                                        session = Session(
+                                          id: randomString(),
+                                          userId: user.id,
+                                          isActive: true,
+                                        );
+                                        mamaEmotion = "smile";
+                                        _messages.clear();
+                                        _sessionHelper.create(session);
+                                        _addMessageFromUser(
+                                          "Mama, ada waktu gak, mau tanya tanya nih mengenai barang ini?",
+                                        );
+                                        _addMessageFromMama(
+                                          "Ya, ${user.getFirstName()}, apa yang mau kamu beli?",
+                                        );
+                                        isInitial = true;
+                                      });
+                                    },
+                                    child: const CustomText(
+                                      "Chat Lagi dengan Mama",
+                                      color: Configs.backgroundColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )

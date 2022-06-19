@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_impuls/configs/configs.dart';
+import 'package:flutter_impuls/widgets/custom/custom_text.dart';
+import 'package:flutter_impuls/widgets/long_raised_button.dart';
 
 class StartSessionWidget extends StatelessWidget {
   final Function onPressedStartSession;
@@ -29,9 +32,16 @@ class StartSessionWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 20),
-                  RaisedButton(
-                    child: const Text('Chat Sekarang'),
+                  LongRaisedButton(
+                    height: 50,
+                    dividedBy: 1.2,
                     onPressed: onPressedStartSession,
+                    child: const CustomText(
+                      "Chat Sekarang",
+                      color: Configs.backgroundColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
