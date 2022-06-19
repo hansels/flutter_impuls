@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
 import 'package:flutter_impuls/enums/page_name.dart';
+import 'package:flutter_impuls/enums/user_hobby.dart';
+import 'package:flutter_impuls/enums/user_profession.dart';
 import 'package:flutter_impuls/functions/routes.dart';
-import 'package:flutter_impuls/models/wishlist/wishlist.dart';
-import 'package:flutter_impuls/screens/wishlist/widgets/wishlist_card.dart';
+import 'package:flutter_impuls/functions/toast_helper.dart';
+import 'package:flutter_impuls/functions/token_version.dart';
+import 'package:flutter_impuls/models/user/user.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 import 'package:flutter_impuls/widgets/long_raised_button.dart';
 import 'package:flutter_impuls/widgets/normal_form_field.dart';
@@ -39,24 +42,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            WishlistCard(
-              wishlist: Wishlist(
-                name: "JALAN JALAN",
-                progress: 50000,
-                target: 200000,
-              ),
-            ),
-            WishlistCard(
-              wishlist: Wishlist(
-                name: "Pergi Terbang",
-                progress: 25000,
-                target: 300000,
-              ),
-            ),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-              child: CustomText("Login ke Akunmu.",
-                  fontSize: 28, fontWeight: FontWeight.bold),
+              child: CustomText(
+                "Login ke Akunmu.",
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Padding(
               padding:
@@ -96,13 +88,14 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 25.0,
-            ),
+            const SizedBox(height: 25.0),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
-              child: CustomText('Email',
-                  fontSize: 15, fontWeight: FontWeight.bold),
+              child: CustomText(
+                'Email',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Padding(
               padding:
@@ -129,7 +122,24 @@ class _LoginPageState extends State<LoginPage> {
                 child: LongRaisedButton(
                   height: 50,
                   dividedBy: 1.2,
-                  onPressed: () {},
+                  onPressed: () {
+                    User user = User(
+                      id: "user@nasihatmama.com",
+                      name: "Rachel Ginting",
+                      email: "user@nasihatmama.com",
+                      password: "123456",
+                      profession: UserProfession.Artis,
+                      hobbies: [
+                        UserHobby.MakeUp,
+                        UserHobby.Menonton,
+                        UserHobby.MainGame,
+                      ],
+                    );
+
+                    ToastHelper.show("Login Success", context);
+                    TokenVersion.setEmailAndUser("user@nasihatmama.com", user);
+                    Routes.pushReplacement(context, PageName.Home);
+                  },
                   child: const CustomText(
                     "Login",
                     color: Configs.backgroundColor,

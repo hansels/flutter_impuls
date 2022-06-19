@@ -4,6 +4,7 @@ import 'package:flutter_impuls/enums/page_name.dart';
 import 'package:flutter_impuls/enums/user_profession.dart';
 import 'package:flutter_impuls/functions/enum_parser.dart';
 import 'package:flutter_impuls/functions/routes.dart';
+import 'package:flutter_impuls/functions/toast_helper.dart';
 import 'package:flutter_impuls/widgets/custom/custom_check_box.dart';
 import 'package:flutter_impuls/widgets/custom/custom_dropdown.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
@@ -64,18 +65,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       Routes.pushReplacement(context, PageName.Login);
                     },
                     style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            // side: BorderSide(color: Colors.red),
-                          ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          // side: BorderSide(color: Colors.red),
                         ),
-                        elevation: MaterialStateProperty.all<double>(0),
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 248, 231, 220)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(12.5))),
+                      ),
+                      elevation: MaterialStateProperty.all<double>(0),
+                      overlayColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 248, 231, 220),
+                      ),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.all(12.5),
+                      ),
+                    ),
                     child: const CustomText(
                       'Login',
                       fontSize: 15,
@@ -85,9 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 25.0,
-            ),
+            const SizedBox(height: 25.0),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
               child:
@@ -168,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
                 child: CustomCheckBox(
-                  'Make-up',
+                  'Make Up',
                   onChanged: (a) {},
                 )),
             Padding(
@@ -199,7 +200,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: LongRaisedButton(
                   height: 50,
                   dividedBy: 1.2,
-                  onPressed: () {},
+                  onPressed: () {
+                    ToastHelper.show("Register Success", context);
+                    Routes.pushReplacement(context, PageName.Login);
+                  },
                   child: const CustomText(
                     "Register",
                     color: Configs.backgroundColor,

@@ -2,9 +2,18 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_impuls/enums/chat_type.dart';
+import 'package:flutter_impuls/models/chat/chat.dart';
+import 'package:flutter_impuls/models/chat/chat_helper.dart';
+import 'package:flutter_impuls/models/session/session.dart';
+import 'package:flutter_impuls/models/session/session_helper.dart';
+import 'package:flutter_impuls/models/user/user.dart';
+import 'package:flutter_impuls/screens/home/mama_logic.dart';
+import 'package:flutter_impuls/screens/home/start_session_widget.dart';
+import 'package:flutter_impuls/widgets/builder/future_use.dart';
+import 'package:flutter_impuls/widgets/builder/user_builder.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -15,116 +24,148 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
-  final _user2 = const types.User(id: '06c33e8b-e835-4736-80f4-123456789');
-  final ScrollController _scrollController = ScrollController();
+
+  User user;
+  types.User _user;
+  types.User _mama;
+  ScrollController _scrollController;
+  Session session;
+  SessionHelper _sessionHelper;
+  ChatHelper _chatHelper;
+  String mamaEmotion;
 
   @override
   void initState() {
+    _user = const types.User(id: "user@nasihatmama.com");
+    _mama = const types.User(id: 'mama');
+    _scrollController = ScrollController();
+    _sessionHelper = SessionHelper();
+    _chatHelper = ChatHelper();
+    mamaEmotion = "smile";
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.asset(
-          getMamaImage(),
-          width: MediaQuery.of(context).size.width * 0.4,
-        ),
-        Expanded(
-          child: Chat(
-            messages: _messages,
-            onAttachmentPressed: _handleAtachmentPressed,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            user: _user,
-            scrollController: _scrollController,
-          ),
-        ),
-      ],
-    );
-  }
+    return UserBuilder(builder: (user) {
+      this.user = user;
+      return FutureBuilder<Session>(
+        future: _sessionHelper.getSession(user.email),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            session = snapshot.data;
 
-  String getMamaImage() {
-    return "assets/mama_pog_512.png";
-  }
+            if (session.isEmpty) {
+              return StartSessionWidget(
+                onPressedStartSession: () {
+                  setState(() {
+                    session = Session(
+                      id: randomString(),
+                      userId: user.id,
+                      isActive: true,
+                    );
+                    _sessionHelper.create(session);
+                    _addMessageFromUser(
+                      "Mama, ada waktu gak, mau tanya tanya nih mengenai barang ini?",
+                    );
+                    _addMessageFromMama(
+                      "Ya, ${user.getFirstName()}, apa yang mau kamu beli?",
+                    );
+                  });
+                },
+              );
+            }
 
-  void _addMessage(types.Message message) {
-    setState(() {
-      _messages.insert(0, message);
+            return FutureUse<Iterable<Chat>>(
+              future: _chatHelper.getList(session.id),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final chats = snapshot.data;
+                  for (var chat in chats) {
+                    types.Message message;
+
+                    if (chat.userId == user.id) {
+                      message = types.TextMessage(
+                        author: _user,
+                        id: chat.id,
+                        text: chat.content,
+                      );
+                    } else {
+                      message = types.TextMessage(
+                        author: _mama,
+                        id: chat.id,
+                        text: chat.content,
+                      );
+                    }
+
+                    if (_messages.where((e) => e.id == message.id).isEmpty) {
+                      _messages.insert(0, message);
+                    }
+                  }
+                }
+
+                return Column(
+                  children: [
+                    Image.asset(
+                      getMamaImage(mamaEmotion),
+                      width: MediaQuery.of(context).size.width * 0.4,
+                    ),
+                    Expanded(
+                      child: ui.Chat(
+                        messages: _messages,
+                        onPreviewDataFetched: _handlePreviewDataFetched,
+                        onSendPressed: _handleSendPressed,
+                        user: _user,
+                        scrollController: _scrollController,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
     });
   }
 
-  void _handleAtachmentPressed() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Photo'),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Cancel'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  String getMamaImage(String name) {
+    return "assets/mama_${name}_512.png";
   }
 
-  void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
+  void _addMessageFromMama(String message) {
+    _addMessage(_mama, message);
+  }
 
-    if (result != null) {
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
+  void _addMessageFromUser(String message) {
+    _addMessage(_user, message);
+  }
 
-      final message = types.ImageMessage(
-        author: _user,
+  void _addMessage(types.User author, String text) {
+    setState(() {
+      final message = types.TextMessage(
+        author: author,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
         id: randomString(),
-        name: result.name,
-        size: bytes.length,
-        uri: result.path,
-        width: image.width.toDouble(),
+        text: text,
       );
 
-      final message2 = types.ImageMessage(
-        author: _user2,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
-        id: randomString(),
-        name: result.name,
-        size: bytes.length,
-        uri: result.path,
-        width: image.width.toDouble(),
-      );
+      final now = DateTime.now().toUtc().millisecondsSinceEpoch;
 
-      _addMessage(message);
-      _addMessage(message2);
-    }
+      final chat = Chat(
+        id: "${now}_${author.id}",
+        sessionId: session.id,
+        userId: author.id,
+        content: text,
+        chatType: ChatType.Text,
+      );
+      _chatHelper.create(chat);
+
+      _messages.insert(0, message);
+    });
   }
 
   void _handlePreviewDataFetched(
@@ -143,23 +184,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: randomString(),
-      text: message.text,
-    );
-
-    final textMessage2 = types.TextMessage(
-      author: _user2,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: randomString(),
-      text: message.text,
-    );
-
-    _addMessage(textMessage);
-    _addMessage(textMessage2);
+  void _handleSendPressed(types.PartialText message) async {
+    _addMessageFromUser(message.text);
 
     try {
       _scrollController.animateTo(
@@ -168,6 +194,16 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(milliseconds: 500),
       );
     } catch (err) {}
+
+    final reply = await MamaLogic.getReply(session, message.text);
+
+    if (reply != null) {
+      session = reply.session;
+
+      for (final message in reply.replies) {
+        _addMessageFromMama(message);
+      }
+    }
   }
 
   String randomString() {
