@@ -1,32 +1,37 @@
-import 'package:flutter_impuls/enums/item_category.dart';
-import 'package:flutter_impuls/enums/item_type.dart';
-import 'package:flutter_impuls/functions/enum_parser.dart';
+import 'package:flutter_impuls/models/item/item.dart';
 
 class Session {
+  static Session _empty;
+
   final String id;
   final String userId;
-  final String itemData;
-  final ItemType itemType;
-  final int itemQuantity;
+  final int quantity;
   final String reason;
-  final ItemCategory itemCategory;
-  final int itemPrice;
-  final int itemRanking;
+  final bool verdict;
+  final int rejectType;
+  Item item;
+
   final bool isHobby;
   final bool isProfession;
+  final bool isActive;
+
+  static Session empty() {
+    return _empty ??= Session(id: "EMPTY");
+  }
+
+  bool get isEmpty => this == Session.empty();
 
   Session({
     this.id,
     this.userId,
-    this.itemData,
-    this.itemType,
-    this.itemQuantity,
+    this.quantity,
+    this.item,
     this.reason,
-    this.itemCategory,
-    this.itemPrice,
-    this.itemRanking,
+    this.verdict,
+    this.rejectType,
     this.isHobby,
     this.isProfession,
+    this.isActive,
   });
 
   static Session fromMap(Map<String, dynamic> data) {
@@ -35,16 +40,14 @@ class Session {
         : Session(
             id: data["id"] ?? "",
             userId: data["userId"] ?? "",
-            itemData: data["itemData"] ?? "",
-            itemType: ItemType.values[data["itemType"]],
-            itemQuantity: data["itemQuantity"] ?? 0,
+            quantity: data["quantity"] ?? 0,
+            item: Item.fromMap(data["item"]),
             reason: data["reason"] ?? "",
-            itemCategory: EnumParser.getEnum<ItemCategory>(
-                ItemCategory.values, data["itemCategory"]),
-            itemPrice: data["itemPrice"] ?? 0,
-            itemRanking: data["itemRanking"] ?? 0,
+            verdict: data["verdict"] ?? false,
+            rejectType: data["rejectType"] ?? 0,
             isHobby: data["isHobby"] ?? false,
             isProfession: data["isProfession"] ?? false,
+            isActive: data["isActive"] ?? false,
           );
   }
 
@@ -56,15 +59,14 @@ class Session {
     return {
       "id": id,
       "userId": userId,
-      "itemData": itemData,
-      "itemType": EnumParser.getString(itemType),
-      "itemQuantity": itemQuantity,
+      "quantity": quantity,
+      "item": item?.toVariables(),
       "reason": reason,
-      "itemCategory": EnumParser.getString(itemCategory),
-      "itemPrice": itemPrice,
-      "itemRanking": itemRanking,
+      "verdict": verdict,
+      "rejectType": rejectType,
       "isHobby": isHobby,
       "isProfession": isProfession,
+      "isActive": isActive,
     };
   }
 }

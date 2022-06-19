@@ -12,8 +12,16 @@ class ChatHelper {
         .map((snapshot) => snapshot.docs.map((e) => Chat.fromMap(e.data())));
   }
 
+  Future<Iterable<Chat>> getList(String sessionId) {
+    return instance
+        .collection('chats')
+        .where('sessionId', isEqualTo: sessionId)
+        .get()
+        .then((snapshot) => snapshot.docs.map((e) => Chat.fromMap(e.data())));
+  }
+
   Future<void> create(Chat chat) async {
-    await instance.collection('chats').doc().set(chat.toVariables());
+    await instance.collection('chats').doc(chat.id).set(chat.toVariables());
   }
 
   Future<void> update(Chat chat) async {

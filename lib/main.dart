@@ -5,7 +5,6 @@ import 'package:flutter_impuls/firebase_options.dart';
 import 'package:flutter_impuls/functions/token_version.dart';
 import 'package:flutter_impuls/screens/home/home_screen.dart';
 import 'package:flutter_impuls/screens/introduction/introduction_screen.dart';
-import 'package:flutter_impuls/screens/login/login_screen.dart';
 import 'package:flutter_impuls/widgets/animated_splash/animated_splash.dart';
 
 void main() async {
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: AnimatedSplash.styled(
-        imagePath: "assets/mama_pog_512.png",
+        imagePath: "assets/mama_smile_512.png",
         customFunction: getHomeScreen(context),
         curve: Curves.easeInOutCirc,
         style: AnimationStyle.FadeIn,
@@ -43,18 +42,11 @@ class MyApp extends StatelessWidget {
 
   static Future<Widget> getHomeScreen(BuildContext context) async {
     String email = await TokenVersion.getEmail();
-    bool isTutorial = await TokenVersion.getIsTutorial();
-
-    return HomeScreen();
-
-    if (!isTutorial) {
-      return IntroductionScreen();
-    }
 
     if (email.isNotEmpty) {
       return HomeScreen();
     } else {
-      return LoginScreen();
+      return IntroductionScreen();
     }
   }
 }

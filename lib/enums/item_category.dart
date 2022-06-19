@@ -1,4 +1,10 @@
 enum ItemCategory {
-  Education,
-  Travel,
+  Edukasi,
+  Belanja,
+  Liburan,
+  Donasi,
+  Hiburan,
+  Teknologi,
+  Kesehatan,
+  Makanan,
 }
