@@ -151,8 +151,11 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 10.0),
-              child:
-                  CustomText('Hobi', fontSize: 15, fontWeight: FontWeight.bold),
+              child: CustomText(
+                'Hobi',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Padding(
                 padding:
