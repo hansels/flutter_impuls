@@ -1,4 +1,5 @@
 enum PageName {
+  AddWishlist,
   Home,
   Introduction,
   Login,

@@ -26,4 +26,12 @@ class WishlistHelper {
         .get();
     return Wishlist.fromMapList(snapshot.docs.map((e) => e.data()).toList());
   }
+
+  Stream<Iterable<Wishlist>> getWishlistsStream(String id) {
+    return instance
+        .collection('wishlists')
+        .where("userId", isEqualTo: id)
+        .snapshots()
+        .map((e) => Wishlist.fromMapList(e.docs.map((e) => e.data()).toList()));
+  }
 }

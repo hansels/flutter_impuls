@@ -3,6 +3,7 @@ import 'package:flutter_impuls/enums/page_name.dart';
 import 'package:flutter_impuls/functions/enum_parser.dart';
 import 'package:flutter_impuls/functions/loading_function.dart';
 import 'package:flutter_impuls/interfaces/i_route_configuration.dart';
+import 'package:flutter_impuls/screens/add_wishlist/add_wishlist_screen_route_configuration.dart';
 import 'package:flutter_impuls/screens/home/home_screen_route_configuration.dart';
 import 'package:flutter_impuls/screens/introduction/introduction_screen_route_configuration.dart';
 import 'package:flutter_impuls/screens/login/login_screen_route_configuration.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_impuls/widgets/builder/future_use.dart';
 
 class Routes {
   static List<IRouteConfiguration> listRoute = [
+    AddWishlistScreenRouteConfiguration(),
     HomeScreenRouteConfiguration(),
     IntroductionScreenRouteConfiguration(),
     LoginScreenRouteConfiguration(),

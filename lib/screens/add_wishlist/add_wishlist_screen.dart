@@ -2,33 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_impuls/basics/screens/base_screen_with_app_bar.dart';
 import 'package:flutter_impuls/enums/page_name.dart';
-import 'package:flutter_impuls/functions/routes.dart';
-import 'package:flutter_impuls/screens/wishlist/wishlist_page.dart';
+import 'package:flutter_impuls/screens/add_wishlist/add_wishlist_page.dart';
 import 'package:flutter_impuls/widgets/custom/custom_text.dart';
 
-class WishlistScreen extends BaseScreenWithAppBar {
-  WishlistScreen()
+class AddWishlistScreen extends BaseScreenWithAppBar {
+  AddWishlistScreen()
       : super(
-          "Wishlist",
-          PageName.Wishlist,
+          "Edit Wishlist",
+          PageName.AddWishlist,
           scrollable: false,
           padding: EdgeInsets.zero,
         );
 
   @override
   Widget content(BuildContext context) {
-    return const WishlistPage();
-  }
-
-  @override
-  Widget drawer(BuildContext context) {
-    return null;
+    return const AddWishlistPage();
   }
 
   @override
   Widget appBar(BuildContext context) {
     return AppBar(
-      title: const CustomText("Wishlist", fontSize: 20),
+      title: const CustomText("Edit Wishlist", fontSize: 20),
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: Colors.transparent,
@@ -38,12 +32,7 @@ class WishlistScreen extends BaseScreenWithAppBar {
   }
 
   @override
-  Widget floatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        Routes.push(context, PageName.AddWishlist);
-      },
-      child: const Icon(Icons.add),
-    );
+  Widget drawer(BuildContext context) {
+    return null;
   }
 }

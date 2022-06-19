@@ -2,12 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_impuls/configs/configs.dart';
 import 'package:flutter_impuls/firebase_options.dart';
-import 'package:flutter_impuls/functions/double_back_function.dart';
 import 'package:flutter_impuls/functions/token_version.dart';
 import 'package:flutter_impuls/screens/home/home_screen.dart';
 import 'package:flutter_impuls/screens/introduction/introduction_screen.dart';
 import 'package:flutter_impuls/screens/login/login_screen.dart';
-import 'package:flutter_impuls/screens/register/register_screen.dart';
 import 'package:flutter_impuls/widgets/animated_splash/animated_splash.dart';
 
 void main() async {
@@ -47,16 +45,16 @@ class MyApp extends StatelessWidget {
     String email = await TokenVersion.getEmail();
     bool isTutorial = await TokenVersion.getIsTutorial();
 
-    return RegisterScreen();
+    return HomeScreen();
 
-    // if (!isTutorial) {
-    //   return IntroductionScreen();
-    // }
+    if (!isTutorial) {
+      return IntroductionScreen();
+    }
 
-    // if (email.isNotEmpty) {
-    //   return DoubleBackFunction.use(child: HomeScreen());
-    // } else {
-    //   return DoubleBackFunction.use(child: LoginScreen());
-    // }
+    if (email.isNotEmpty) {
+      return HomeScreen();
+    } else {
+      return LoginScreen();
+    }
   }
 }
