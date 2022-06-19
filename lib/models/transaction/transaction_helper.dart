@@ -4,11 +4,14 @@ import 'package:flutter_impuls/models/transaction/transaction.dart';
 class TransactionHelper {
   final instance = fire.FirebaseFirestore.instance;
 
-  Future<Iterable<Transaction>> getListByUserId(String userId) {
+  Future<Iterable<Transaction>> getListByUserId(
+    String userId,
+    String category,
+  ) {
     return instance
         .collection('transactions')
         .where('userId', isEqualTo: userId)
-        .where('daySinceLastPurchase', isLessThanOrEqualTo: 30)
+        .where('category', isEqualTo: category)
         .get()
         .then((snapshot) =>
             snapshot.docs.map((e) => Transaction.fromMap(e.data())));

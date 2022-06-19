@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_impuls/functions/enum_parser.dart';
@@ -8,17 +9,15 @@ import 'package:flutter_impuls/models/item/item.dart';
 import 'package:flutter_impuls/models/item/item_helper.dart';
 import 'package:flutter_impuls/models/reply/reply.dart';
 import 'package:flutter_impuls/models/session/session.dart';
-import 'package:flutter_impuls/models/session/session_helper.dart';
 import 'package:flutter_impuls/models/transaction/transaction.dart';
 import 'package:flutter_impuls/models/transaction/transaction_helper.dart';
 import 'package:flutter_impuls/models/user/user.dart';
 import 'package:flutter_impuls/models/user/user_helper.dart';
+import 'package:flutter_impuls/models/wishlist/wishlist.dart';
 import 'package:flutter_impuls/models/wishlist/wishlist_helper.dart';
 
 class MamaLogic {
   static final _itemHelper = ItemHelper();
-  static final _sessionHelper = SessionHelper();
-  static final _userHelper = UserHelper();
   static final _bankHelper = BankHelper();
   static final _transactionHelper = TransactionHelper();
   static final _wishlistHelper = WishlistHelper();
@@ -48,9 +47,17 @@ class MamaLogic {
 
     if (session.quantity == null || session.quantity == 0) {
       session.quantity = parseMessageForQuantity(message);
+      Iterable<Transaction> transactions =
+          await _transactionHelper.getListByUserId(
+        session.userId,
+        EnumParser.getString(session.item.itemCategory),
+      );
       return Reply(
         session: session,
-        replies: replyForReason(session),
+        replies: replyForReason(
+          session,
+          transactions != null && transactions.isNotEmpty,
+        ),
         mamaEmotion: "pog",
       );
     }
@@ -62,7 +69,10 @@ class MamaLogic {
 
       Iterable<Bank> banks = await _bankHelper.getListByUserId(session.userId);
       Iterable<Transaction> transactions =
-          await _transactionHelper.getListByUserId(session.userId);
+          await _transactionHelper.getListByUserId(
+        session.userId,
+        EnumParser.getString(session.item.itemCategory),
+      );
 
       int totalBalance = 0;
 
@@ -79,47 +89,74 @@ class MamaLogic {
         transaction = transactions.first;
       }
 
-      double scoring = 0;
+      double scoring = 1;
+
       double categoryScoring = 0;
       double spendingScoring = 0;
-      double reasonScoring = 0.5;
+      double reasonScoring = 0.01;
       double itemRatingScoring = 0;
       double timeScoring = 0;
 
-      itemRatingScoring = (session.item.itemRanking / 10) * 0.5;
-      spendingScoring =
-          sigmoid(totalPaymentPrice / totalBalance, derivative: true) * 0.3;
+      itemRatingScoring = 0.3 - ((session.item.itemRanking / 10) * 0.3);
+      spendingScoring = poisson(totalPaymentPrice / 2000000, 1);
       timeScoring = transaction != null
-          ? sigmoid(
-                  transaction.daySinceLastPurchase / session.item.itemDuration,
-                  derivative: true) *
-              0.2
+          ? poisson(
+              transaction.daySinceLastPurchase / session.item.itemDuration, 1)
           : 0;
       categoryScoring = transaction != null
-          ? sigmoid((transaction.daySinceLastPurchase) / 100,
-                  derivative: true) *
-              0.2
+          ? poisson(transaction.daySinceLastPurchase / 100, 1)
           : 0;
 
-      scoring = itemRatingScoring -
+      scoring = scoring -
+          itemRatingScoring -
           spendingScoring -
           timeScoring -
-          categoryScoring +
+          categoryScoring -
           reasonScoring;
 
-      if (scoring > 0.5) {
+      print(scoring);
+
+      if (totalBalance < totalPaymentPrice) {
+        session.verdict = false;
+        session.rejectType = 3;
         return Reply(
           session: session,
           replies: [
-            "Mama Setuju untuk membeli ${session.quantity} produk ${EnumParser.getString(session.item.itemCategory)} ini${totalPaymentPrice > 100000 ? ", tolong jaga baik baik barangnya ya kalau sudah dibeli, ini hasil dari usaha kamu lho..." : "."}"
-                "Beli Barangnya disini ya, ${user.name}",
+            "Hmm, Mama lihat pengeluaran kamu sudah besar di bulan ini. Lebih baik pembeliannya ditunda aja ya untuk bulan depan",
+          ],
+          mamaEmotion: "worried",
+        );
+      }
+
+      if (scoring > 0.5) {
+        session.verdict = true;
+        return Reply(
+          session: session,
+          replies: [
+            "Mama Setuju untuk membeli ${session.quantity} produk ${EnumParser.getString(session.item.itemCategory)} ini${totalPaymentPrice > 100000 ? ", tolong jaga baik baik barangnya ya kalau sudah dibeli, ini hasil dari usaha kamu lho..." : "."}",
+            "Beli Barangnya disini ya, ${user.getFirstName()}",
           ],
           mamaEmotion: "proud",
         );
       } else {
+        session.verdict = false;
+
+        Wishlist wishlist = Wishlist(
+          id: randomString(),
+          itemCategory: session.item.itemCategory,
+          name: EnumParser.getString(session.item.itemCategory),
+          progress: 0,
+          target: session.item.itemPrice,
+          userId: session.userId,
+        );
+        _wishlistHelper.create(wishlist);
         return Reply(
           session: session,
-          replies: [],
+          replies: [
+            "Wah, Barangnya sepertinya kurang cocok dengan kondisi kamu sekarang ini, lebih baik tunggu barangnya rusak atau sangat dibutuhkan dulu ya",
+            "Uang yang ada sebaiknya kamu tabung saja untuk mewujudkan Wishlist kamu",
+            "Untuk sementara ini, mama catat dulu ya barangnya"
+          ],
           mamaEmotion: "worried",
         );
       }
@@ -149,21 +186,36 @@ class MamaLogic {
     ];
   }
 
-  static List<String> replyForReason(Session session) {
-    bool alreadyHaveSimilarItem = true;
+  static List<String> replyForReason(
+      Session session, bool alreadyHaveSimilarItem) {
     if (alreadyHaveSimilarItem) {
       return [
-        "Memangnya kenapa kamu mau beli ini? Kan kamu sudah punya produk ${EnumParser.getString(session.item.itemCategory)} yang dibeli sebelumnya"
+        "Memangnya kepa kamu mau beli ini? Kan kamu sudah punya produk ${EnumParser.getString(session.item.itemCategory)} yang dibeli sebelumnya"
       ];
     } else {
       return ["Memangnya kenapa kamu mau beli ini?"];
     }
   }
 
-  static double sigmoid(double x, {bool derivative = false}) {
-    if (!derivative) {
-      return 1 / (1 + exp(-x));
+  static double sigmoid(double x) {
+    return 1 / (1 + pow(e, -x));
+  }
+
+  static int factorial(int x) {
+    if (x == 0) {
+      return 1;
+    } else {
+      return x * factorial(x - 1);
     }
-    return x * (1 - x);
+  }
+
+  static double poisson(double x, int degree) {
+    return pow(e, -x) * pow(x, degree) / factorial(degree);
+  }
+
+  static String randomString() {
+    final random = Random.secure();
+    final values = List<int>.generate(16, (i) => random.nextInt(255));
+    return base64UrlEncode(values);
   }
 }
