@@ -98,13 +98,26 @@ class MamaLogic {
       double timeScoring = 0;
 
       itemRatingScoring = 0.3 - ((session.item.itemRanking / 10) * 0.3);
-      spendingScoring = poisson(totalPaymentPrice / 2000000, 1);
+      spendingScoring = poisson(totalPaymentPrice / (totalBalance * 0.7), 1);
       timeScoring = transaction != null
           ? poisson(
-              transaction.daySinceLastPurchase / session.item.itemDuration, 1)
+              1 /
+                  (1 -
+                              (transaction.daySinceLastPurchase /
+                                  session.item.itemDuration) ==
+                          1
+                      ? 1.01
+                      : (transaction.daySinceLastPurchase /
+                          session.item.itemDuration)),
+              1)
           : 0;
       categoryScoring = transaction != null
-          ? poisson(transaction.daySinceLastPurchase / 100, 1)
+          ? poisson(
+              1 /
+                  (1 - (transaction.daySinceLastPurchase / 100) == 1
+                      ? 1.01
+                      : (transaction.daySinceLastPurchase / 100)),
+              1)
           : 0;
 
       scoring = scoring -
