@@ -35,18 +35,14 @@ class _WishlistPageState extends State<WishlistPage> {
         return StreamUse<Iterable<Wishlist>>(
           stream: _wishlistHelper.getWishlistsStream(data.data),
           builder: (ctx, data) {
-            if (data == null || data.hasData) {
-              return const Center(
-                child: Text("No wishlists here yet."),
-              );
+            if (data == null || !data.hasData) {
+              return const Center(child: Text("No wishlists here yet."));
             }
 
             return ListView.builder(
               itemCount: data.data.length,
               itemBuilder: (ctx, index) {
-                return WishlistCard(
-                  wishlist: data.data.elementAt(index),
-                );
+                return WishlistCard(wishlist: data.data.elementAt(index));
               },
             );
           },
